@@ -1,7 +1,9 @@
 # Terrar1
+
 Repo for the Mikrocontroller of Terra1
 
 ## Kurzbeschreibung
+
 Diese C++ Anwendung ist ein MQTT-basiertes Sensordatenerfassungs- und -steuerungssystem, das auf einem ESP8266 Mikrocontroller läuft.
 
 Die Sensoren, die verwendet werden, sind:
@@ -20,3 +22,109 @@ Die MQTT-Daten werden an einen MQTT-Broker gesendet, der in der Anwendung konfig
 Während des Betriebs wird die Anwendung kontinuierlich die Sensorwerte lesen und an den MQTT-Broker senden. Wenn die Anwendung eine MQTT-Nachricht erhält, die das Licht ein- oder ausschaltet, wird sie das entsprechende Kommando ausführen.
 
 Dieses Programm könnte in einem Umfeld wie einer Smart-Home-Automatisierung, einer Wetterstation oder einem Umweltüberwachungssystem eingesetzt werden. Es bietet die Grundlage für eine Vielzahl von IoT-Projekten, da es die Fernsteuerung von Geräten und die Fernüberwachung von Sensordaten ermöglicht.
+
+## Use Case Diagramm
+
+
+## Domain Model
+
+```plantuml
+@startuml
+
+class WiFi {
+    +WiFi()
+}
+
+class WiFiMulti {
+    +WiFiMulti()
+}
+
+class PubSubClient {
+    -WiFiClient espClient
+    +PubSubClient(WiFiClient espClient)
+    +setServer(const char* mqtt_server, int port)
+    +setCallback(void (*callback)(char*, byte*, unsigned int))
+    +connect(const char* id)
+    +connected() const
+    +subscribe(const char* topic)
+    +publish(const char* topic, const char* payload)
+    +loop()
+}
+
+class Wire {
+    +Wire()
+}
+
+class DHT {
+    -int DHTPIN
+    -int DHTTYPE
+    +DHT(int pin, int type)
+    +begin()
+    +readHumidity() const
+    +readTemperature() const
+}
+
+class DallasTemperature {
+    -OneWire oneWire
+    +DallasTemperature(OneWire oneWire)
+    +begin()
+    +requestTemperatures()
+    +getTempCByIndex(int index) const
+}
+
+class OneWire {
+    +OneWire(int pin)
+}
+
+class Setup {
+    +setup_wifi()
+    +turnOnLight()
+    +turnOffLight()
+    +callback(char* topic, byte* message, unsigned int length)
+    +reconnect()
+    +setup()
+    +loop()
+}
+
+class PlantUML {
+    +main()
+}
+
+class WiFiClient {
+    +WiFiClient()
+}
+
+
+PlantUML --> WiFi
+PlantUML --> WiFiMulti
+PlantUML --> PubSubClient
+PlantUML --> Wire
+PlantUML --> DHT
+PlantUML --> DallasTemperature
+PlantUML --> OneWire
+PlantUML --> Setup
+PlantUML --> WiFiClient
+
+
+Setup --> WiFi
+Setup --> WiFiClient
+Setup --> PubSubClient
+Setup --> DHT
+Setup --> DallasTemperature
+
+
+WiFiMulti --> WiFi
+
+DHT --> int
+DHT --> long
+
+DallasTemperature --> OneWire
+
+OneWire --> int
+
+Setup --> WiFi
+
+WiFiClient --> WiFi
+
+@enduml
+```
