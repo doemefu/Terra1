@@ -29,7 +29,7 @@ Dieses Programm könnte in einem Umfeld wie einer Smart-Home-Automatisierung, ei
 ## Domain Model
 
 ```plantuml
-@startuml
+@startuml domain_model.png
 
 class WiFi {
     +WiFi()
@@ -128,3 +128,5 @@ WiFiClient --> WiFi
 
 @enduml
 ```
+
+![Domain Model](domain_model.png)
