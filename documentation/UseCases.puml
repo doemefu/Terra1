@@ -1,0 +1,25 @@
+@startuml
+
+left to right direction
+
+actor User
+
+rectangle "Smart Plant System" {
+  usecase "Setup WiFi" as UC1
+  usecase "Turn On Light" as UC2
+  usecase "Turn Off Light" as UC3
+  usecase "Receive MQTT Message" as UC4
+  usecase "Reconnect to MQTT Server" as UC5
+  usecase "Read Sensor Data" as UC6
+
+  User --> UC1: Configure WiFi
+  User --> UC2: Control Light
+  User --> UC3: Control Light
+  UC4 --> UC2: Light On
+  UC4 --> UC3: Light Off
+  UC5 --> UC4: MQTT Connection Failed
+  UC6 --> UC4: MQTT Message Received
+  UC6 --> UC1: WiFi Connected
+}
+
+@enduml

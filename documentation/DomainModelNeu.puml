@@ -1,0 +1,48 @@
+@startuml
+
+class Arduino {
+
+}
+
+class myWiFi {
+}
+
+class PubSubClient {
+  isConnectedState
+}
+
+class myMQTT {
+  Verbindungsdetails
+}
+
+class Setup {
+
+}
+
+class mySensors {
+
+}
+
+class DHT {
+
+}
+
+class DS18B20 {
+
+}
+
+Arduino --> Setup
+Arduino --> myWiFi
+Arduino --> myMQTT
+Arduino --> mySensors
+
+Setup --> PubSubClient
+
+myMQTT --> PubSubClient
+
+mySensors --> DHT
+mySensors --> DS18B20
+
+mySensors --> PubSubClient
+
+@enduml
