@@ -25,11 +25,13 @@ Repo for the Mikrocontroller of Terra1
     * [Use Case: Sensordaten als MQTT-Nachrichten veröffentlichen](#use-case-sensordaten-als-mqtt-nachrichten-veröffentlichen)
     * [Use Case: Eingehende MQTT-Nachrichten verarbeiten](#use-case-eingehende-mqtt-nachrichten-verarbeiten)
     * [Use Case: Hauptanwendung initialisieren und verwalten](#use-case-hauptanwendung-initialisieren-und-verwalten)
+  * [Class Diagram](#class-diagram)
 <!-- TOC -->
 
 ## Kurzbeschreibung
 
-Diese C++ Anwendung ist ein MQTT-basiertes Sensordatenerfassungs- und -steuerungssystem, das auf einem ESP8266 Mikrocontroller läuft.
+Diese C++ Anwendung ist ein MQTT-basiertes Sensordatenerfassungs- und -steuerungssystem, das auf einem ESP8266 
+Mikrocontroller läuft.
 
 Die Sensoren, die verwendet werden, sind:
 
@@ -373,4 +375,11 @@ Dieser Use Case beschreibt den Vorgang, bei dem die Hauptanwendung initialisiert
 2. Die MainApplication verbindet alle Komponenten miteinander.
 3. Die MainApplication steuert den Ablauf des Programms.
 
-Dies sind die Use Case Specifications für die im zuvor erstellten Domain-Modell dargestellten Use Cases. Jeder Use Case hat eine klare Struktur mit Vorbedingungen, Nachbedingungen und einem detaillierten Ablauf. Die Use Case Specifications sind mit dem zuvor erstellten Use Case-Diagramm synchronisiert, um eine klare Darstellung der verschiedenen Use Cases und ihrer Beziehungen zu bieten.
+Dies sind die Use Case Specifications für die im zuvor erstellten Domain-Modell dargestellten Use Cases. Jeder Use Case 
+hat eine klare Struktur mit Vorbedingungen, Nachbedingungen und einem detaillierten Ablauf. Die Use Case Specifications 
+sind mit dem zuvor erstellten Use Case-Diagramm synchronisiert, um eine klare Darstellung der verschiedenen Use Cases 
+und ihrer Beziehungen zu bieten.
+
+## Class Diagram
+
+![Klassendiagramm](documentation/KlassenDiagramm.svg)
