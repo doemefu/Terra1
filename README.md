@@ -27,8 +27,8 @@ Repo for the Mikrocontroller of Terra1
     * [Use Case: Überprüfung des Verbindungsstatus zum MQTT-Broker](#use-case-überprüfung-des-verbindungsstatus-zum-mqtt-broker)
     * [Use Case: Sensordaten lesen und als MQTT-Nachrichten veröffentlichen](#use-case-sensordaten-lesen-und-als-mqtt-nachrichten-veröffentlichen)
     * [Use Case: Hauptanwendung initialisieren und verwalten](#use-case-hauptanwendung-initialisieren-und-verwalten)
-    * [Zusatzuse Case: Lichtsteuerung automatisch](#zusatzuse-case-lichtsteuerung-automatisch)
-    * [Zusatzuse Case: Lichtsteuerung manuell](#zusatzuse-case-lichtsteuerung-manuell)
+    * [Zusatz UseCase: Lichtsteuerung automatisch](#zusatz-usecase-lichtsteuerung-automatisch)
+    * [Zusatz UseCase: Lichtsteuerung manuell](#zusatz-usecase-lichtsteuerung-manuell)
   * [Class Diagram](#class-diagram)
 <!-- TOC -->
 
@@ -297,7 +297,7 @@ Dieser Use Case beschreibt den Vorgang, bei dem die Hauptanwendung initialisiert
 2. Die MainApplication verbindet alle Komponenten miteinander.
 3. Die MainApplication steuert den Ablauf des Programms.
 
-### Zusatzuse Case: Lichtsteuerung automatisch
+### Zusatz UseCase: Lichtsteuerung automatisch
 
 **Beschreibung:**
 Dieser Use Case beschreibt den Vorgang, bei dem die Lichtsteuerung automatisch, wie bei einer Zeitschaltuhr, durchgeführt wird. 
@@ -318,7 +318,7 @@ Dafür muss der Controller allerdings erst noch hardwareseitig erweitert werden.
 2. Der LightController überprüft den aktuellen Lichtstatus.
 3. Der LightController schaltet das Licht entsprechend dem aktuellen Lichtstatus und der Uhrzeit an oder aus.
 
-### Zusatzuse Case: Lichtsteuerung manuell
+### Zusatz UseCase: Lichtsteuerung manuell
 
 **Beschreibung:**
 Dieser Use Case beschreibt den Vorgang, bei dem die Lichtsteuerung manuell durchgeführt wird. Dafür wertet der Microcontroller eingehende MQTT-Nachrichten aus und schaltet das Licht entsprechend an oder aus.
