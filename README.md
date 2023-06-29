@@ -27,6 +27,8 @@ Repo for the Mikrocontroller of Terra1
     * [Use Case: Überprüfung des Verbindungsstatus zum MQTT-Broker](#use-case-überprüfung-des-verbindungsstatus-zum-mqtt-broker)
     * [Use Case: Sensordaten lesen und als MQTT-Nachrichten veröffentlichen](#use-case-sensordaten-lesen-und-als-mqtt-nachrichten-veröffentlichen)
     * [Use Case: Hauptanwendung initialisieren und verwalten](#use-case-hauptanwendung-initialisieren-und-verwalten)
+    * [Zusatzuse Case: Lichtsteuerung automatisch](#zusatzuse-case-lichtsteuerung-automatisch)
+    * [Zusatzuse Case: Lichtsteuerung manuell](#zusatzuse-case-lichtsteuerung-manuell)
   * [Class Diagram](#class-diagram)
 <!-- TOC -->
 
@@ -54,7 +56,7 @@ According to module 326
 
 ## Use Case Diagramm
 
-![Use Case Diagramm](documentation/UseCases.png)
+![Use Case Diagramm](documentation/UseCases.svg)
 
 ## Domain Model
 
@@ -142,26 +144,25 @@ Eine Übersicht verschiedener UseCases, die das System erfüllen soll.
 Dieser Use Case beschreibt den Vorgang, bei dem die WiFi-Verbindung konfiguriert wird.
 
 **Akteure:**
-- Benutzer
 - WiFiManager
 
 **Vorbedingungen:**
+- Verbindungsdetails wurden korrekt gespeichert.
 - Die WiFiManager-Komponente ist initialisiert.
 
 **Nachbedingungen:**
 - Die WiFi-Verbindung wurde erfolgreich konfiguriert.
 
 **Ablauf:**
-1. Der Benutzer startet die Konfiguration der WiFi-Verbindung.
-2. Das System fordert den Benutzer auf, die erforderlichen Informationen (z. B. SSID und Passwort) einzugeben.
-3. Der Benutzer gibt die WiFi-Verbindungsinformationen ein.
-4. Der WiFiManager konfiguriert die WiFi-Verbindung basierend auf den eingegebenen Informationen.
-5. Das System bestätigt die erfolgreiche Konfiguration der WiFi-Verbindung.
+1. Der Benutzer startet den Controller.
+2. Der WiFiManager liest die WiFi-Verbindungsinformationen ein.
+3. Der WiFiManager versucht die WiFi-Verbindung herzustellen.
+4. Das System bestätigt die erfolgreiche Konfiguration der WiFi-Verbindung.
 
 **Alternative Abläufe:**
-- Schritt 4a: Wenn die eingegebenen WiFi-Verbindungsinformationen ungültig sind:
+- Schritt 4a: Wenn die WiFi-Verbindung fehlschlägt:
     - Das System zeigt eine Fehlermeldung an.
-    - Der Benutzer wird aufgefordert, gültige Informationen einzugeben.
+    - Das System wartet 30 sekunden.
     - Der Ablauf kehrt zu Schritt 3 zurück.
 
 ### Use Case: Überprüfung des WiFi-Verbindungsstatus
@@ -296,6 +297,52 @@ Dieser Use Case beschreibt den Vorgang, bei dem die Hauptanwendung initialisiert
 2. Die MainApplication verbindet alle Komponenten miteinander.
 3. Die MainApplication steuert den Ablauf des Programms.
 
+### Zusatzuse Case: Lichtsteuerung automatisch
+
+**Beschreibung:**
+Dieser Use Case beschreibt den Vorgang, bei dem die Lichtsteuerung automatisch, wie bei einer Zeitschaltuhr, durchgeführt wird. 
+Dafür muss der Controller allerdings erst noch hardwareseitig erweitert werden.
+
+**Akteure:**
+- LightController
+
+**Vorbedingungen:**
+- Die erforderlichen Komponenten sind initialisiert und konfiguriert.
+
+**Nachbedingungen:**
+- Die Lichtsteuerung wurde erfolgreich durchgeführt und Licht wurde dementsprechend geschaltet.
+- Eine Bestätigungsnachricht wurde erfolgreich als MQTT-Nachricht veröffentlicht.
+
+**Ablauf:**
+1. Die MainApplication ruft zu gegebener Zeit den LightController auf.
+2. Der LightController überprüft den aktuellen Lichtstatus.
+3. Der LightController schaltet das Licht entsprechend dem aktuellen Lichtstatus und der Uhrzeit an oder aus.
+
+### Zusatzuse Case: Lichtsteuerung manuell
+
+**Beschreibung:**
+Dieser Use Case beschreibt den Vorgang, bei dem die Lichtsteuerung manuell durchgeführt wird. Dafür wertet der Microcontroller eingehende MQTT-Nachrichten aus und schaltet das Licht entsprechend an oder aus.
+Dafür muss der Controller allerdings erst noch hardwareseitig erweitert werden.
+
+**Akteure:**
+- LightController
+- MQTTMessageHandler
+
+**Vorbedingungen:**
+- Die erforderlichen Komponenten sind initialisiert und konfiguriert.
+- Eine Verbindung zum MQTT-Broker wurde erfolgreich hergestellt.
+- Das entsprechende MQTT-Topic wurde abonniert.
+
+**Nachbedingungen:**
+- Die Lichtsteuerung wurde erfolgreich durchgeführt und Licht wurde dementsprechend geschaltet.
+- Eine Bestätigungsnachricht wurde erfolgreich als MQTT-Nachricht veröffentlicht.
+
+**Ablauf:**
+1. Der MQTTMessageHandler empfängt eine MQTT-Nachricht.
+2. Der MQTTMessageHandler überprüft, ob die empfangene MQTT-Nachricht eine Lichtsteuerungsnachricht ist und ruft dementsprechend den LightManager auf.
+3. Der LightManager überprüft den aktuellen Lichtstatus.
+4. Der LightManager schaltet das Licht entsprechend dem aktuellen Lichtstatus an oder aus.
+5. Der MQTTMessageHandler veröffentlicht eine Bestätigungsnachricht als MQTT-Nachricht.
 
 ## Class Diagram
 
