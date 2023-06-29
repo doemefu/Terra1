@@ -12,6 +12,12 @@ Repo for the Mikrocontroller of Terra1
   * [Use Case Diagramm](#use-case-diagramm)
   * [Domain Model](#domain-model)
   * [CRC Cards](#crc-cards)
+    * [Class: WiFiManager](#class-wifimanager)
+    * [Class: PubSubClientManager](#class-pubsubclientmanager)
+    * [Class: SensorManager](#class-sensormanager)
+    * [Class: LightController](#class-lightcontroller)
+    * [Class: MQTTMessageHandler](#class-mqttmessagehandler)
+    * [Class: MainApplication](#class-mainapplication)
   * [Use Case Specification](#use-case-specification)
     * [Use Case: Konfiguration der WiFi-Verbindung](#use-case-konfiguration-der-wifi-verbindung)
     * [Use Case: Überprüfung des WiFi-Verbindungsstatus](#use-case-überprüfung-des-wifi-verbindungsstatus)
@@ -19,18 +25,14 @@ Repo for the Mikrocontroller of Terra1
     * [Use Case: Lokale IP-Adresse abrufen](#use-case-lokale-ip-adresse-abrufen)
     * [Use Case: Verbindung zum MQTT-Broker herstellen](#use-case-verbindung-zum-mqtt-broker-herstellen)
     * [Use Case: Überprüfung des Verbindungsstatus zum MQTT-Broker](#use-case-überprüfung-des-verbindungsstatus-zum-mqtt-broker)
-    * [Use Case: MQTT-Themen abonnieren](#use-case-mqtt-themen-abonnieren)
-    * [Use Case: MQTT-Nachrichten veröffentlichen](#use-case-mqtt-nachrichten-veröffentlichen)
-    * [Use Case: Sensordaten lesen](#use-case-sensordaten-lesen)
-    * [Use Case: Sensordaten als MQTT-Nachrichten veröffentlichen](#use-case-sensordaten-als-mqtt-nachrichten-veröffentlichen)
-    * [Use Case: Eingehende MQTT-Nachrichten verarbeiten](#use-case-eingehende-mqtt-nachrichten-verarbeiten)
+    * [Use Case: Sensordaten lesen und als MQTT-Nachrichten veröffentlichen](#use-case-sensordaten-lesen-und-als-mqtt-nachrichten-veröffentlichen)
     * [Use Case: Hauptanwendung initialisieren und verwalten](#use-case-hauptanwendung-initialisieren-und-verwalten)
   * [Class Diagram](#class-diagram)
 <!-- TOC -->
 
 ## Kurzbeschreibung
 
-Diese C++ Anwendung ist ein MQTT-basiertes Sensordatenerfassungs- und -steuerungssystem, das auf einem ESP8266 
+Diese Anwendung ist ein MQTT-basiertes Sensordatenerfassungs- und -steuerungssystem, das auf einem ESP32 
 Mikrocontroller läuft.
 
 Die Sensoren, die verwendet werden, sind:
@@ -40,15 +42,11 @@ Die Sensoren, die verwendet werden, sind:
 3. Fotoresistor: Ein Lichtempfindlichkeits-Sensor, dessen Auslesung an den MQTT-Broker gesendet wird.
 4. Bodenwiderstandssensor: Ein Sensor, der die Feuchtigkeit des Bodens misst. Die Messwerte werden an den MQTT-Broker gesendet.
 
-Die Anwendung ermöglicht es auch, über MQTT-Befehle, das Licht ein- oder auszuschalten. Die entsprechenden MQTT-Themen lauten "terra1/light" mit den Nachrichten "lightOn" und "lightOff".
+Während des Betriebs wird die Anwendung kontinuierlich die Sensorwerte lesen und an eine Datenbank senden. Dort kann der Nutzer die Daten auswerten. Die Daten werden zudem von einem Telegrambot verarbeitet der den Benutzer bei kritischen Werten alarmiert.
 
-Die Anwendung stellt eine Verbindung zu einem WiFi-Netzwerk her und stellt sicher, dass sie während des gesamten Betriebs mit dem Netzwerk verbunden bleibt. Die SSID und das Passwort für das Netzwerk können in der Anwendung konfiguriert werden.
+Dieses Programm könnte in einem Umfeld wie einer Smart-Home-Automatisierung integriert werden. Es bietet die Grundlage für eine Vielzahl von IoT-Projekten, da es die Fernsteuerung von Geräten und die Fernüberwachung von Sensordaten ermöglicht.
 
-Die MQTT-Daten werden an einen MQTT-Broker gesendet, der in der Anwendung konfiguriert ist.
-
-Während des Betriebs wird die Anwendung kontinuierlich die Sensorwerte lesen und an den MQTT-Broker senden. Wenn die Anwendung eine MQTT-Nachricht erhält, die das Licht ein- oder ausschaltet, wird sie das entsprechende Kommando ausführen.
-
-Dieses Programm könnte in einem Umfeld wie einer Smart-Home-Automatisierung, einer Wetterstation oder einem Umweltüberwachungssystem eingesetzt werden. Es bietet die Grundlage für eine Vielzahl von IoT-Projekten, da es die Fernsteuerung von Geräten und die Fernüberwachung von Sensordaten ermöglicht.
+In einem nächsten Schritt wird der Controller ebenfalls das Licht und die Bewässerung steuern. Dazu wird eine Zeitschaltuhr implementiert und eingehende Nachrichten verarbeitet. Voraussetzung dafür ist allerdings die hardwareseitige Erweiterung des Controllers durch ein Relais.
 
 # Design Phase
 
@@ -64,70 +62,70 @@ According to module 326
 
 ## CRC Cards
 
-**Class: WiFiManager**
+### Class: WiFiManager
 
-Responsibilities:
+**Responsibilities:**
 - Configuriert die WiFi-Verbindung
 - Überprüft den WiFi-Verbindungsstatus
 - Stellt die Verbindung zum WiFi-Netzwerk her
 - Gibt die lokale IP-Adresse zurück
 
-Collaborators:
+**Collaborators:**
 - WiFi
 - WiFiMulti
 
-**Class: PubSubClientManager**
+### Class: PubSubClientManager
 
-Responsibilities:
+**Responsibilities:**
 - Stellt die Verbindung zum MQTT-Broker her
 - Überprüft den Verbindungsstatus zum MQTT-Broker
 - Abonniert MQTT-Themen
 - Veröffentlicht MQTT-Nachrichten
 
-Collaborators:
+**Collaborators:**
 - WiFiClient
 - PubSubClient
 
-**Class: SensorManager**
+### Class: SensorManager
 
-Responsibilities:
+**Responsibilities:**
 - Liest die Sensordaten von DHT11, DS18B20, Photoresistor und Soil Resistor
 - Konvertiert die Sensordaten in geeignete Formate
 - Veröffentlicht die Sensordaten als MQTT-Nachrichten
 
-Collaborators:
+**Collaborators:**
 - DHTSensor
 - DallasTemperatureSensor
 - SoilSensor
 - PubSubClient
 
-**Class: LightController**
+### Class: LightController
 
-Responsibilities:
+**Responsibilities:**
 - Schaltet das Licht ein
 - Schaltet das Licht aus
 
-Collaborators:
+**Collaborators:**
 - PubSubClientManager
 
-**Class: MQTTMessageHandler**
+### Class: MQTTMessageHandler
 
-Responsibilities:
+**Responsibilities:**
 - Verarbeitet eingehende MQTT-Nachrichten
 - Ruft entsprechende Aktionen auf (z.B. Licht ein-/ausschalten)
 
-Collaborators:
+**Collaborators:**
 - PubSubClientManager
 - LightController
 
-**Class: MainApplication**
+### Class: MainApplication
 
-Responsibilities:
+**Responsibilities:**
 - Initialisiert und verwaltet die Hauptanwendung
 - Verbindet alle Komponenten
 - Steuert den Ablauf des Programms
 
-Collaborators:
+**Collaborators:**
 - WiFiManager
 - PubSubClientManager
 - SensorManager
@@ -136,7 +134,7 @@ Collaborators:
 
 ## Use Case Specification
 
-Hier ist eine Übersicht der Use Case Specifications für die beschriebenen Use Cases, die mit dem zuvor erstellten Use Case-Diagramm synchronisiert sind:
+Eine Übersicht verschiedener UseCases, die das System erfüllen soll.
 
 ### Use Case: Konfiguration der WiFi-Verbindung
 
@@ -223,9 +221,7 @@ Dieser Use Case beschreibt den Vorgang, bei dem die lokale IP-Adresse abgerufen 
 
 ### Use Case: Verbindung zum MQTT-Broker herstellen
 
-**Beschreibung:
-
-**
+**Beschreibung:**
 Dieser Use Case beschreibt den Vorgang, bei dem eine Verbindung zum MQTT-Broker hergestellt wird.
 
 **Akteure:**
@@ -259,102 +255,27 @@ Dieser Use Case beschreibt den Vorgang, bei dem der Verbindungsstatus zum MQTT-B
 1. Der PubSubClientManager überprüft den Verbindungsstatus zum MQTT-Broker.
 2. Das System gibt den aktuellen Verbindungsstatus zum MQTT-Broker aus.
 
-### Use Case: MQTT-Themen abonnieren
+### Use Case: Sensordaten lesen und als MQTT-Nachrichten veröffentlichen
 
 **Beschreibung:**
-Dieser Use Case beschreibt den Vorgang, bei dem MQTT-Themen abonniert werden.
-
-**Akteure:**
-- PubSubClientManager
-
-**Vorbedingungen:**
-- Die PubSubClientManager-Komponente ist initialisiert.
-- Eine Verbindung zum MQTT-Broker wurde erfolgreich hergestellt.
-
-**Nachbedingungen:**
-- Die MQTT-Themen wurden erfolgreich abonniert.
-
-**Ablauf:**
-1. Der PubSubClientManager abonniert die erforderlichen MQTT-Themen.
-2. Das System bestätigt das erfolgreiche Abonnieren der MQTT-Themen.
-
-### Use Case: MQTT-Nachrichten veröffentlichen
-
-**Beschreibung:**
-Dieser Use Case beschreibt den Vorgang, bei dem MQTT-Nachrichten veröffentlicht werden.
-
-**Akteure:**
-- PubSubClientManager
-
-**Vorbedingungen:**
-- Die PubSubClientManager-Komponente ist initialisiert.
-- Eine Verbindung zum MQTT-Broker wurde erfolgreich hergestellt.
-
-**Nachbedingungen:**
-- Die MQTT-Nachrichten wurden erfolgreich veröffentlicht.
-
-**Ablauf:**
-1. Der PubSubClientManager veröffentlicht die MQTT-Nachrichten.
-2. Das System bestätigt das erfolgreiche Veröffentlichen der MQTT-Nachrichten.
-
-### Use Case: Sensordaten lesen
-
-**Beschreibung:**
-Dieser Use Case beschreibt den Vorgang, bei dem Sensordaten von verschiedenen Sensoren gelesen werden.
+Dieser Use Case beschreibt den Vorgang, bei dem Sensordaten von verschiedenen Sensoren gelesen und als MQTT-Nachrichten veröffentlicht werden.
 
 **Akteure:**
 - SensorManager
 
 **Vorbedingungen:**
 - Die SensorManager-Komponente ist initialisiert.
+- Eine Verbindung zum MQTT-Broker wurde erfolgreich hergestellt.
 
 **Nachbedingungen:**
 - Die Sensordaten wurden erfolgreich gelesen.
-
-**Ablauf:**
-1. Der SensorManager liest die Sensordaten von DHT11, DS18B20, Photoresistor und Soil Resistor.
-2. Das System gibt die gelesenen Sensordaten aus.
-
-### Use Case: Sensordaten als MQTT-Nachrichten veröffentlichen
-
-**Beschreibung:**
-Dieser Use Case beschreibt den Vorgang, bei dem die gelesenen Sensordaten als MQTT-Nachrichten veröffentlicht werden.
-
-
-
-**Akteure:**
-- SensorManager
-
-**Vorbedingungen:**
-- Die SensorManager-Komponente ist initialisiert.
-- Eine Verbindung zum MQTT-Broker wurde erfolgreich hergestellt.
-
-**Nachbedingungen:**
 - Die Sensordaten wurden erfolgreich als MQTT-Nachrichten veröffentlicht.
 
 **Ablauf:**
-1. Der SensorManager konvertiert die gelesenen Sensordaten in geeignete Formate.
-2. Der SensorManager veröffentlicht die konvertierten Sensordaten als MQTT-Nachrichten.
-3. Das System bestätigt das erfolgreiche Veröffentlichen der Sensordaten als MQTT-Nachrichten.
-
-### Use Case: Eingehende MQTT-Nachrichten verarbeiten
-
-**Beschreibung:**
-Dieser Use Case beschreibt den Vorgang, bei dem eingehende MQTT-Nachrichten verarbeitet werden.
-
-**Akteure:**
-- MQTTMessageHandler
-
-**Vorbedingungen:**
-- Der MQTTMessageHandler ist initialisiert.
-- Eine Verbindung zum MQTT-Broker wurde erfolgreich hergestellt.
-
-**Nachbedingungen:**
-- Die eingehenden MQTT-Nachrichten wurden erfolgreich verarbeitet.
-
-**Ablauf:**
-1. Der MQTTMessageHandler empfängt eine eingehende MQTT-Nachricht.
-2. Der MQTTMessageHandler verarbeitet die eingehende MQTT-Nachricht und ruft die entsprechenden Aktionen auf (z. B. Licht ein-/ausschalten).
+1. Der SensorManager liest die Sensordaten von DHT11, DS18B20, Photoresistor und Soil Resistor.
+2. Der SensorManager konvertiert die gelesenen Sensordaten in geeignete Formate.
+3. Der SensorManager veröffentlicht die konvertierten Sensordaten als MQTT-Nachrichten.
+4. Das System bestätigt das erfolgreiche Veröffentlichen der Sensordaten als MQTT-Nachrichten.
 
 ### Use Case: Hauptanwendung initialisieren und verwalten
 
@@ -375,10 +296,6 @@ Dieser Use Case beschreibt den Vorgang, bei dem die Hauptanwendung initialisiert
 2. Die MainApplication verbindet alle Komponenten miteinander.
 3. Die MainApplication steuert den Ablauf des Programms.
 
-Dies sind die Use Case Specifications für die im zuvor erstellten Domain-Modell dargestellten Use Cases. Jeder Use Case 
-hat eine klare Struktur mit Vorbedingungen, Nachbedingungen und einem detaillierten Ablauf. Die Use Case Specifications 
-sind mit dem zuvor erstellten Use Case-Diagramm synchronisiert, um eine klare Darstellung der verschiedenen Use Cases 
-und ihrer Beziehungen zu bieten.
 
 ## Class Diagram
 
