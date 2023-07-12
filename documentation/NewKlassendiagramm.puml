@@ -1,0 +1,124 @@
+@startuml
+
+class Main
+
+abstract class Sensor {
+    + {abstract} readValue(): float
+    + {abstract} readPublishValue(mqttManager: MqttManager*): void
+}
+
+class SensorFactory {
+    + createSensor(sensorType: std::string): Sensor*
+    + initSensors(dhtSensor: DHT*, dallasTemperatureSensor: DallasTemperature*): void
+}
+
+class DHTSensor {
+    - dht: DHT
+    + DHTSensor(pin: uint8_t, type: uint8_t)
+    + {abstract} readValue(): float
+    + {abstract} readPublishValue(mqttManager: MqttManager*): void
+}
+
+class DallasTemperatureSensor {
+    - oneWire: OneWire
+    - ds18b20: DallasTemperature
+    + DallasTemperatureSensor(pin: uint8_t)
+    + {abstract} readValue(): float
+    + {abstract} readPublishValue(mqttManager: MqttManager*): void
+}
+
+class MqttManager {
+    - mqttClient: PubSubClient
+    - callbackMap: std::map<String, CallbackFunction>
+    + {static} getInstance(client: WiFiClient): MqttManager&
+    + subscribe(topic: String, callback: CallbackFunction): void
+    + loop(): void
+    + publish(topic: String, message: String): void
+}
+
+class Network {
+    - connectionState: NetworkState*
+    + Network()
+    + getConnectionState(): NetworkState*
+    + switching(): void
+    + setState(newState: NetworkState&): void
+}
+
+abstract class NetworkState {
+    + {abstract} enter(network: Network*): void
+    + {abstract} switching(network: Network*): void
+    + {abstract} exit(network: Network*): void
+}
+
+class Disconnected {
+    - instance: Disconnected*
+    + {static} getInstance(): Disconnected*
+    + {abstract} enter(network: Network*): void
+    + {abstract} exit(network: Network*): void
+    + {abstract} switching(network: Network*): void
+}
+
+class Connecting {
+    - instance: Connecting*
+    + {static} getInstance(): Connecting*
+    + {abstract} enter(network: Network*): void
+    + {abstract} exit(network: Network*): void
+    + {abstract} switching(network: Network*): void
+}
+
+class Connected {
+    - instance: Connected*
+    + {static} getInstance(): Connected*
+    + {abstract} enter(network: Network*): void
+    + {abstract} exit(network: Network*): void
+    + {abstract} switching(network: Network*): void
+}
+
+class MyDHT {
+    + Pin: int
+    + Type: uint8_t
+}
+
+class MyDallasTemperature {
+    + Pin: int
+}
+
+class WifiDetails {
+    + SSID: char*
+    + Password: char*
+}
+
+class MqttDetails {
+    + Server: char*
+    + Port: int
+}
+
+class Timing {
+    + measureWait: int
+}
+
+' Main related
+Main --> SensorFactory
+Main --> MqttManager
+Main --> Network
+
+' Sensor related
+Sensor <|.. DHTSensor
+Sensor <|.. DallasTemperatureSensor
+SensorFactory --> Sensor
+DHTSensor --> SensorFactory
+DallasTemperatureSensor --> SensorFactory
+DHTSensor --> MqttManager
+DallasTemperatureSensor --> MqttManager
+
+' Network related
+Network <|.. NetworkState
+Disconnected <|.. NetworkState
+Connecting <|.. NetworkState
+Connected <|.. NetworkState
+Disconnected -up-> Network
+Connecting -up-> Network
+Connected -up-> Network
+
+
+@enduml

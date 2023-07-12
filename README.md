@@ -347,3 +347,35 @@ Dafür muss der Controller allerdings erst noch hardwareseitig erweitert werden.
 ## Class Diagram
 
 ![Klassendiagramm](documentation/KlassenDiagramm.svg)
+
+## Projektstrukutr neu
+
+- lib/ 
+  - NetworkManager/ (Singleton Pattern)
+    - NetworkManager.h 
+    - NetworkManager.cpp
+  - SensorFactory/ (Factory Pattern)
+    - SensorFactory.h
+    - SensorFactory.cpp
+  - Sensor/
+    - Sensor.h
+    - DHTSensor.h
+    - DHTSensor.cpp
+    - DallasTemperatureSensor.h
+    - DallasTemperatureSensor.cpp
+  - MqttManager/ (Observer Pattern)
+    - MqttManager.h
+    - MqttManager.cpp
+  - LightController/ (Command Pattern)
+    - LightController.h
+    - LightController.cpp
+  - State/
+    - SystemState.h (State Pattern)
+    - ConnectingState.h
+    - ConnectingState.cpp
+    - ConnectedState.h
+    - ConnectedState.cpp
+- include/
+  - Config.h
+- src/
+  - main.cpp
