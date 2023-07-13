@@ -10,7 +10,7 @@ Sensor* ds18b20Sensor;
 MqttManager* mqttManager;
 WiFiClient espClient;
 
-List<Sensor*> sensors;
+//List<Sensor*> sensors;
 
 unsigned long lastDHTMeasurement = 0;
 

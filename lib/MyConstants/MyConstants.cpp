@@ -19,8 +19,10 @@ namespace MyDallasTemperature
 
 namespace WifiDetails
 {
-    const char* SSID = "Quellbrunnen";
-    const char* Password = "Fam1Furchert!";
+    //const char* SSID = "Quellbrunnen";
+    //const char* Password = "Fam1Furchert!";
+    const char* SSID = "Dominics iPhone";
+    const char* Password = "passworT";
 }
 
 namespace MqttDetails {
