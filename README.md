@@ -348,7 +348,7 @@ Dafür muss der Controller allerdings erst noch hardwareseitig erweitert werden.
 
 ![Klassendiagramm](documentation/KlassenDiagramm.svg)
 
-## Projektstrukutr neu
+## Projektstruktur neu
 
 - lib/ 
   - NetworkManager/ (Singleton Pattern)
@@ -379,3 +379,5 @@ Dafür muss der Controller allerdings erst noch hardwareseitig erweitert werden.
   - Config.h
 - src/
   - main.cpp
+
+![Klassendiagramm](documentation/NewKlassendiagramm.svg)
