@@ -1,0 +1,34 @@
+@startuml
+
+actor User
+
+rectangle "System Terrariensteuerung" {
+    usecase UC1 as "Konfiguration der\nWiFi-Verbindung"
+    usecase UC2 as "Überprüfung des\nWiFi-Verbindungsstatus"
+    usecase UC3 as "Verbindung zum\nWiFi-Netzwerk herstellen"
+    usecase UC5 as "Verbindung zum\nMQTT-Broker herstellen"
+    usecase UC6 as "Überprüfung des Verbindungsstatus\nzum MQTT-Broker"
+    usecase UC7 as "Sensordaten lesen und\nals MQTT-Nachrichten veröffentlichen"
+    usecase UC8 as "Hauptanwendung initialisieren\nund verwalten"
+    usecase UC9 as "Lichtsteuerung automatisch"
+    usecase UC10 as "Lichtsteuerung manuell"
+}
+
+User -- UC8
+User -- UC10
+User <-- UC7
+
+UC8 ..> UC2 : extends
+UC2 ..> UC3 : extends
+UC3 ..> UC1 : extends
+
+UC8 ..> UC5 : extends
+UC5 ..> UC2 : includes
+UC8 ..> UC7 : includes
+
+UC10 ..> UC9 : extends
+
+UC5 ..> UC6 : extends
+
+UC8 ..> UC9 : includes
+@enduml

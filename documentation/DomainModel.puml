@@ -1,0 +1,35 @@
+@startuml
+
+class WiFi
+class WiFiMulti
+class PubSubClient
+class Wire
+class DHT
+class DallasTemperature
+class OneWire
+class Setup
+class WiFiClient
+
+class long
+class int
+
+Setup --> WiFi
+Setup --> WiFiClient
+Setup --> PubSubClient
+Setup --> DHT
+Setup --> DallasTemperature
+
+WiFiMulti --> WiFi
+
+DHT --> Wire
+DHT --> int
+DHT --> long
+
+DallasTemperature --> OneWire
+DallasTemperature --> int
+
+OneWire --> Wire
+
+WiFiClient --> WiFi
+
+@enduml
