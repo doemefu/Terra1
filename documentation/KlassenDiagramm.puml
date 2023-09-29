@@ -1,0 +1,93 @@
+@startuml
+
+class Arduino {
+  +begin(): void
+  +end(): void
+}
+
+class SensorManager{
+  +initializeSensors(): void
+  +readSensors(): void
+}
+
+interface SensorBuilder {
+  readData(): float
+}
+
+class WiFiManager {
+  +connect(ssid: string, password: string): WiFiClient
+}
+
+class PubSubClientManager {
+  +connect(mqttServer: string): PubSubClient
+}
+
+class MQTTMessageHandler {
+  +handleMessage(topic: string, message: string): void
+}
+
+class MainApplication {
+  -wifiManager: WiFiManager
+  -pubSubClientManager: PubSubClientManager
+  -sensorManager: SensorManager
+  -mqttMessageHandler: MQTTMessageHandler
+}
+
+class WiFiClient {
+  +ssid: string
+  +password: string
+  +status: string
+  +connect(): void
+  +disconnect(): void
+  +sendData(data: string): void
+}
+
+class PubSubClient {
+  +mqttServer: string
+  +status: string
+  +connect(): void
+  +disconnect(): void
+  +subscribe(topic: string): void
+  +unsubscribe(topic: string): void
+  +publish(topic: string, message: string): void
+}
+
+class DHTSensor {
+  +temperature: float
+  +humidity: float
+  +readData(): void
+}
+
+class DallasTemperatureSensor {
+  +temperature: float
+  +readData(): void
+}
+
+class SoilSensor {
+  +soilHumidity: float
+  +readData(): void
+}
+
+Arduino --> WiFiManager
+Arduino --> PubSubClientManager
+Arduino --> MQTTMessageHandler
+Arduino --> MainApplication
+
+WiFiManager --> WiFiClient
+
+PubSubClientManager --> PubSubClient
+
+SensorBuilder <|.. DHTSensor
+SensorBuilder <|.. DallasTemperatureSensor
+SensorBuilder <|.. SoilSensor
+
+MQTTMessageHandler --> PubSubClientManager
+
+MainApplication --> WiFiManager
+MainApplication --> PubSubClientManager
+MainApplication --> SensorManager
+MainApplication --> MQTTMessageHandler
+
+SensorManager --> SensorBuilder
+
+@enduml
