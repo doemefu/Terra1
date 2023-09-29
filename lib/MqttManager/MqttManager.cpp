@@ -29,7 +29,7 @@ MqttManager::MqttManager(WiFiClient& client) : mqttClient(client) {
 void MqttManager::reconnect() {
     while (!mqttClient.connected()) {
         Serial.print("Attempting MQTT connection...");
-        if (mqttClient.connect("client1")) {
+        if (mqttClient.connect("terra1")) {
             Serial.println("connected");
         } else {
             Serial.print("failed, rc=");

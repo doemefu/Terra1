@@ -30,6 +30,7 @@ Repo for the Mikrocontroller of Terra1
     * [Zusatz UseCase: Lichtsteuerung automatisch](#zusatz-usecase-lichtsteuerung-automatisch)
     * [Zusatz UseCase: Lichtsteuerung manuell](#zusatz-usecase-lichtsteuerung-manuell)
   * [Class Diagram](#class-diagram)
+  * [Projektstruktur neu](#projektstruktur-neu)
 <!-- TOC -->
 
 ## Kurzbeschreibung
