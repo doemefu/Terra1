@@ -1,0 +1,74 @@
+@startuml
+
+class WiFiManager {
+  +configureWiFiConnection()
+  +checkWiFiConnectionStatus(): boolean
+  +connectToWiFiNetwork()
+  +getLocalIPAddress(): string
+}
+
+class PubSubClientManager {
+  +connectToMQTTBroker()
+  +checkConnectionStatus(): boolean
+  +subscribeToMQTTTopics()
+  +publishMQTTMessage()
+}
+
+class SensorManager {
+  +readSensorData(): SensorData
+  +convertSensorData(data: SensorData): ConvertedData
+  +publishSensorData(data: ConvertedData)
+}
+
+class MQTTMessageHandler {
+  +processMQTTMessage(message: MQTTMessage)
+  -performAction(action: string)
+}
+
+class MainApplication {
+  +initialize()
+  +connectComponents()
+  +controlProgramFlow()
+}
+
+class WiFi {
+  // Collaborator class of WiFiManager
+}
+
+class WiFiClient {
+  // Collaborator class of PubSubClientManager
+}
+
+class PubSubClient {
+  // Collaborator class of PubSubClientManager
+}
+
+class DHT {
+  // Collaborator class of SensorManager
+}
+
+class DallasTemperature {
+  // Collaborator class of SensorManager
+}
+
+class OneWire {
+  // Collaborator class of SensorManager
+}
+
+WiFiManager --> WiFi
+
+PubSubClientManager --> WiFiClient
+PubSubClientManager --> PubSubClient
+
+SensorManager --> DHT
+SensorManager --> DallasTemperature
+SensorManager --> OneWire
+
+MQTTMessageHandler --> PubSubClientManager
+
+MainApplication --> WiFiManager
+MainApplication --> PubSubClientManager
+MainApplication --> SensorManager
+MainApplication --> MQTTMessageHandler
+
+@enduml
