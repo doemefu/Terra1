@@ -1,0 +1,61 @@
+@startuml
+
+class WiFiManager {
+
+}
+
+class PubSubClientManager {
+
+}
+
+class SensorManager {
+
+}
+
+class MQTTMessageHandler {
+
+}
+
+class MainApplication {
+
+}
+
+class WiFiClient {
+    ConnectedState
+}
+
+class PubSubClient {
+    ConnectedState
+}
+
+class DHTSensor {
+    Temperature
+    Humidity
+}
+
+class DallasTemperatureSensor {
+    Temperature
+}
+
+class SoilSensor{
+    SoilHumidity
+}
+
+WiFiManager --> WiFiClient
+
+PubSubClientManager --> WiFiClient
+PubSubClientManager --> PubSubClient
+
+SensorManager --> DHTSensor
+SensorManager --> DallasTemperatureSensor
+SensorManager --> SoilSensor
+SensorManager --> PubSubClient
+
+MQTTMessageHandler --> PubSubClientManager
+
+MainApplication --> WiFiManager
+MainApplication --> PubSubClientManager
+MainApplication --> SensorManager
+MainApplication --> MQTTMessageHandler
+
+@enduml
