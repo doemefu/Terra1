@@ -25,7 +25,7 @@ namespace MySHT35
 namespace MyRelay
 {
     const int i2cAddress = 0x11;
-    const int lightChannel = 1;
+    const int lightChannel = 4;
     const int rainChannel = 2;
 }
 namespace WifiDetails
