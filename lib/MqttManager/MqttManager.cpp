@@ -31,9 +31,9 @@ MqttManager::MqttManager(WiFiClient& client, LightController *lightController, R
 void MqttManager::reconnect() {
     while (!mqttClient.connected()) {
         Serial.print("Attempting MQTT connection...");
-        if (mqttClient.connect("terra1", "terra1/status/mqtt", 0, true, "offline")) {
+        if (mqttClient.connect("terra1", "terra1/status/mqtt", 0, true, "{\"MqttState\": \"OFFLINE\"}")) {
             Serial.println("connected");
-            mqttClient.publish("terra1/status/mqtt", "online", true);
+            mqttClient.publish("terra1/status/mqtt", "{\"MqttState\": \"ONLINE\"}", true);
             mqttClient.subscribe("terra1/lamp/man");
             mqttClient.subscribe("terra1/rain/man");
         } else {

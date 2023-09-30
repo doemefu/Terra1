@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_CONNECTED_H
 #define TERRA1_CONNECTED_H
-#pragma once
+
 #include "Network.h"
 #include "NetworkState.h"
 

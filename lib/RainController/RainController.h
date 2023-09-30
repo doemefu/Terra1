@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include "MyConstants.h"
 #include "RelayController.h"  // Include RelayController header
+#include <vector>
+#include "IStateObserver.h"
 
 class RainController {
 public:
@@ -16,13 +18,16 @@ public:
     bool turnRainOn();
     bool turnRainOff();
     StateEnum getRainState();
-    static long getRainStartTime();
-    static void setRainStartTime(long rainStartTime);
+    long getRainStartTime();
+    void setRainStartTime(long rainStartTime);
+    void registerObserver(IStateObserver* observer);
 
 private:
     RelayController *relayController;  // Pointer to the RelayController
     StateEnum RainState;
     static long rainStartTime;
+    std::vector<IStateObserver*> observers;
+
 };
 
 #endif //TERRA1_RainCONTROLLER_H
