@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_MQTTMANAGER_H
 #define TERRA1_MQTTMANAGER_H
-#pragma once
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
@@ -13,22 +13,20 @@
 #include "MyConstants.h"
 #include "LightController.h"
 #include "RainController.h"
+#include "IStateObserver.h"
 
-class MqttManager {
+class MqttManager : public IStateObserver{
 public:
     using CallbackFunction = std::function<void(const String&)>;
-
     static MqttManager& getInstance(WiFiClient& client, LightController* lightController, RainController* rainController);
-
     void subscribe(const String& topic, CallbackFunction callback);
-
     void loop();
-
     void publish(const String &topic, const String &message);
-
     void operator=(MqttManager const&) = delete;
     MqttManager(MqttManager const&) = delete;
-
+    void onStateChanged(const String &topic, const String &state) override {
+        publish(topic, state);
+    }
 
 private:
     PubSubClient mqttClient;

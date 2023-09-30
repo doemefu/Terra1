@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_SHT35_H
 #define TERRA1_SHT35_H
-#pragma once
+
 
 #include "Seeed_SHT35.h"
 #include "Sensor.h"
