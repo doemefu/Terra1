@@ -16,20 +16,39 @@ namespace MyDallasTemperature
 {
     const int Pin = 14;     // The DallasTemperature Pin
 }
-
+namespace MySHT35
+{
+    const int SDAPIN = 21;
+    const int SCLPIN = 22;
+    const int RSTPIN = 2;
+}
+namespace MyRelay
+{
+    const int i2cAddress = 0x11;
+    const int lightChannel = 1;
+    const int rainChannel = 2;
+}
 namespace WifiDetails
 {
-    //const char* SSID = "Quellbrunnen";
-    //const char* Password = "Fam1Furchert!";
-    const char* SSID = "Dominics iPhone";
-    const char* Password = "passworT";
+    const char* SSID = "Quellbrunnen";
+    const char* Password = "Fam1Furchert!";
+    //const char* SSID = "Dominics iPhone";
+    //const char* Password = "passworT";
 }
 
 namespace MqttDetails {
     const char* Server = "cloud.tbz.ch";
     const int Port = 1883;
 }
-
+namespace TimeConfig{
+    const char* ntpServer = "pool.ntp.org";
+    const long  gmtOffset_sec = 3600;
+    const int   daylightOffset_sec = 3600;
+}
 namespace Timing {
     const int measureWait = 30000;
+    long rainStartTime;
+    long rainDuration = 20000;
+    int lightStartTime = 9;
+    int lightStopTime = 18;
 }

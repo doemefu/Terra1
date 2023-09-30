@@ -12,7 +12,7 @@
 class DallasTemperatureSensor : public Sensor {
 public:
     explicit DallasTemperatureSensor(uint8_t pin);
-    float readValue() override;
+    SensorValues readValue() override;
     void readPublishValue(MqttManager *mqttManager) override;
 
 private:

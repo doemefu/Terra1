@@ -12,7 +12,7 @@
 class DHTSensor : public Sensor {
 public:
     DHTSensor(uint8_t pin, uint8_t type);
-    float readValue() override;
+    SensorValues readValue() override;
     void readPublishValue(MqttManager *mqttManager) override;
 
 private:

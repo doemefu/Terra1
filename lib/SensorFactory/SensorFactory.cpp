@@ -11,6 +11,9 @@ Sensor* SensorFactory::createSensor(const std::string& sensorType) {
     else if (sensorType == "DS18B20") {
         Serial.println("Hello from the Dallas SensorFactory!");
         return new DallasTemperatureSensor(MyDallasTemperature::Pin);
+    }else if (sensorType == "SHT35") {
+        Serial.println("Hello from the Sensirion SensorFactory!");
+        return new SHTSensor(MySHT35::SCLPIN);
     }
     return nullptr; // If sensorType does not match any known type, return nullptr
 }
