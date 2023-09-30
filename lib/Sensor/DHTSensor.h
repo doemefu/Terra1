@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_DHTSENSOR_H
 #define TERRA1_DHTSENSOR_H
-#pragma once
+
 
 #include "Sensor.h"
 #include <DHT.h>
