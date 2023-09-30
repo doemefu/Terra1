@@ -7,8 +7,10 @@ DHTSensor::DHTSensor(uint8_t pin, uint8_t type) : dht(pin, type) {
     dht.begin();
 }
 
-float DHTSensor::readValue() {
-    return dht.readTemperature();
+SensorValues DHTSensor::readValue() {
+    SensorValues result;
+    result.temperature = dht.readTemperature();
+    return result;
 }
 
 void DHTSensor::readPublishValue(MqttManager *mqttManager) {

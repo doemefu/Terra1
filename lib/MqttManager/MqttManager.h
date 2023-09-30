@@ -11,12 +11,14 @@
 #include <map>
 #include <functional>
 #include "MyConstants.h"
+#include "LightController.h"
+#include "RainController.h"
 
 class MqttManager {
 public:
     using CallbackFunction = std::function<void(const String&)>;
 
-    static MqttManager& getInstance(WiFiClient& client);
+    static MqttManager& getInstance(WiFiClient& client, LightController* lightController, RainController* rainController);
 
     void subscribe(const String& topic, CallbackFunction callback);
 
@@ -32,11 +34,14 @@ private:
     PubSubClient mqttClient;
     std::map<String, CallbackFunction> callbackMap;
 
-    explicit MqttManager(WiFiClient &client);  // Private constructor
+    explicit MqttManager(WiFiClient &client, LightController *lightController, RainController *rainController);  // Private constructor
 
     void reconnect();
 
     void callbackDispatcher(char* topic, byte* payload, unsigned int length);
+
+    LightController *lightController;  // Pointer to the RelayController
+    RainController *rainController;  // Pointer to the RelayController
 
 };
 
