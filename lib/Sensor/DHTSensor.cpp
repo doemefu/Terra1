@@ -7,8 +7,10 @@ DHTSensor::DHTSensor(uint8_t pin, uint8_t type) : dht(pin, type) {
     dht.begin();
 }
 
-float DHTSensor::readValue() {
-    return dht.readTemperature();
+SensorValues DHTSensor::readValue() {
+    SensorValues result;
+    result.temperature = dht.readTemperature();
+    return result;
 }
 
 void DHTSensor::readPublishValue(MqttManager *mqttManager) {
@@ -28,9 +30,9 @@ void DHTSensor::readPublishValue(MqttManager *mqttManager) {
 
     Serial.println("Temperature: ");
     Serial.println(tempString);
-    mqttManager->publish("terra2/DHT11/temp", tempString);
+    mqttManager->publish("terra1/DHT11/temp", tempString);
     delay(200);
     Serial.println("Humidity: ");
     Serial.println(humiString);
-    mqttManager->publish("terra2/DHT11/humi", humiString);
+    mqttManager->publish("terra1/DHT11/humi", humiString);
 }

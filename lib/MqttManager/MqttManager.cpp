@@ -2,8 +2,8 @@
 #include <utility>
 
 //Singleton
-MqttManager& MqttManager::getInstance(WiFiClient& client) {
-    static MqttManager instance(client);
+MqttManager& MqttManager::getInstance(WiFiClient& client, LightController *lightController, RainController *rainController){
+    static MqttManager instance(client, lightController, rainController);
     return instance;
 }
 
@@ -18,19 +18,24 @@ void MqttManager::loop() {
     mqttClient.loop();
 }
 
-MqttManager::MqttManager(WiFiClient& client) : mqttClient(client) {
+MqttManager::MqttManager(WiFiClient& client, LightController *lightController, RainController *rainController) : mqttClient(client) {
     Serial.println("MqttManager constructor");
     mqttClient.setServer(MqttDetails::Server, MqttDetails::Port);
     mqttClient.setCallback([this](char* topic, byte* payload, unsigned int length) {
         this->callbackDispatcher(topic, payload, length);
     });
+    this->lightController = lightController;
+    this->rainController = rainController;
 }
 
 void MqttManager::reconnect() {
     while (!mqttClient.connected()) {
         Serial.print("Attempting MQTT connection...");
-        if (mqttClient.connect("terra1")) {
+        if (mqttClient.connect("terra1", "terra1/status/mqtt", 0, true, "offline")) {
             Serial.println("connected");
+            mqttClient.publish("terra1/status/mqtt", "online", true);
+            mqttClient.subscribe("terra1/lamp/man");
+            mqttClient.subscribe("terra1/rain/man");
         } else {
             Serial.print("failed, rc=");
             Serial.print(mqttClient.state());
@@ -51,15 +56,23 @@ void MqttManager::callbackDispatcher(char* topic, byte* message, unsigned int le
     }
     Serial.println();
 
-    if (String(topic) == "terra2/lamp") {
-        Serial.print("Changing output to ");
-        if(inpMessage == "lightOn"){
+    if (String(topic) == "terra1/lamp/man") {
+        if(inpMessage == "on"){
             Serial.println("Turning light On");
-            //Dies das kommt noch
+            lightController->turnLightOn();
         }
-        else if(inpMessage == "lightOff"){
+        else if(inpMessage == "off"){
             Serial.println("Turning light Off");
-            //Dies das kommt noch
+            lightController->turnLightOff();
+        }
+    } else if (String(topic) == "terra1/rain/man") {
+        if(inpMessage == "on"){
+            Serial.println("Turning rain On");
+            rainController->turnRainOn();
+        }
+        else if(inpMessage == "off"){
+            Serial.println("Turning rain Off");
+            rainController->turnRainOff();
         }
     }
     else {
