@@ -38,7 +38,7 @@ void SHTSensor::readPublishValue(MqttManager *mqttManager) {
         String jsonErrorString;
         serializeJson(jsonErrorDoc, jsonErrorString);
 
-        mqttManager->publish("terra2/SHT35/status", jsonErrorString.c_str());  // Converting String to char array using c_str()
+        mqttManager->publish("terra1/status/SHT35", jsonErrorString.c_str());  // Converting String to char array using c_str()
         return;
     }
     // Initialize JSON document
@@ -55,6 +55,6 @@ void SHTSensor::readPublishValue(MqttManager *mqttManager) {
     // Publish JSON string
     Serial.println("Publishing Sensor Data as JSON:");
     Serial.println(jsonString);
-    mqttManager->publish("terra2/SHT35/data", jsonString.c_str());  // Converting String to char array using c_str()
+    mqttManager->publish("terra1/SHT35/data", jsonString.c_str());  // Converting String to char array using c_str()
 }
 

@@ -31,10 +31,11 @@ MqttManager::MqttManager(WiFiClient& client, LightController *lightController, R
 void MqttManager::reconnect() {
     while (!mqttClient.connected()) {
         Serial.print("Attempting MQTT connection...");
-        if (mqttClient.connect("terra1")) {
+        if (mqttClient.connect("terra1", "terra1/status/mqtt", 0, true, "offline")) {
             Serial.println("connected");
-            mqttClient.subscribe("terra2/lamp/man");
-            mqttClient.subscribe("terra2/rain/man");
+            mqttClient.publish("terra1/status/mqtt", "online", true);
+            mqttClient.subscribe("terra1/lamp/man");
+            mqttClient.subscribe("terra1/rain/man");
         } else {
             Serial.print("failed, rc=");
             Serial.print(mqttClient.state());
@@ -55,7 +56,7 @@ void MqttManager::callbackDispatcher(char* topic, byte* message, unsigned int le
     }
     Serial.println();
 
-    if (String(topic) == "terra2/lamp/man") {
+    if (String(topic) == "terra1/lamp/man") {
         if(inpMessage == "on"){
             Serial.println("Turning light On");
             lightController->turnLightOn();
@@ -64,7 +65,7 @@ void MqttManager::callbackDispatcher(char* topic, byte* message, unsigned int le
             Serial.println("Turning light Off");
             lightController->turnLightOff();
         }
-    } else if (String(topic) == "terra2/rain/man") {
+    } else if (String(topic) == "terra1/rain/man") {
         if(inpMessage == "on"){
             Serial.println("Turning rain On");
             rainController->turnRainOn();

@@ -30,9 +30,9 @@ void DHTSensor::readPublishValue(MqttManager *mqttManager) {
 
     Serial.println("Temperature: ");
     Serial.println(tempString);
-    mqttManager->publish("terra2/DHT11/temp", tempString);
+    mqttManager->publish("terra1/DHT11/temp", tempString);
     delay(200);
     Serial.println("Humidity: ");
     Serial.println(humiString);
-    mqttManager->publish("terra2/DHT11/humi", humiString);
+    mqttManager->publish("terra1/DHT11/humi", humiString);
 }

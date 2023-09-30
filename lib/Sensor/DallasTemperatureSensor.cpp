@@ -28,7 +28,7 @@ void DallasTemperatureSensor::readPublishValue(MqttManager *mqttManager) {
 
         char tempCstr[8];
         dtostrf(tempC, 1, 2, tempCstr);
-        mqttManager->publish("terra2/DS18B20/temp", tempCstr);
+        mqttManager->publish("terra1/DS18B20/temp", tempCstr);
     }else{
         Serial.println("Error: Could not read temperature data");
     }
