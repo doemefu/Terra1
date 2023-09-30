@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_SENSOR_H
 #define TERRA1_SENSOR_H
-#pragma once
+
 
 #include "MqttManager.h"
 #include "oneWire.h"

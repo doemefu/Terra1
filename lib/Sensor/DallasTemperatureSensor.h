@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_DALLASTEMPERATURESENSOR_H
 #define TERRA1_DALLASTEMPERATURESENSOR_H
-#pragma once
+
 
 #include "Sensor.h"
 #include <DallasTemperature.h>

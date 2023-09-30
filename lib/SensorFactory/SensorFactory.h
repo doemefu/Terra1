@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_SENSORFACTORY_H
 #define TERRA1_SENSORFACTORY_H
-#pragma once
+
 
 #include "Sensor.h"
 #include "DHTSensor.h"
