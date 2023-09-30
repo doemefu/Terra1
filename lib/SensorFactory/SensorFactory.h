@@ -9,6 +9,7 @@
 #include "Sensor.h"
 #include "DHTSensor.h"
 #include "DallasTemperatureSensor.h"
+#include "SHT35.h"
 #include <string>
 #include "MyConstants.h"
 

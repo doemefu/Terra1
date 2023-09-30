@@ -9,9 +9,14 @@
 #include "MqttManager.h"
 #include "oneWire.h"
 
+struct SensorValues{
+    float temperature;
+    float humidity;
+};
+
 class Sensor {
 public:
-    virtual float readValue() = 0;
+    virtual SensorValues readValue() = 0;
     virtual void readPublishValue(MqttManager *mqttManager) = 0;
     virtual ~Sensor() = default;
 };

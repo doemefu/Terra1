@@ -8,9 +8,11 @@ DallasTemperatureSensor::DallasTemperatureSensor(uint8_t pin) : oneWire(pin), ds
     Serial.println("DallasTemperatureSensor initialized");
 }
 
-float DallasTemperatureSensor::readValue() {
+SensorValues DallasTemperatureSensor::readValue() {
+    SensorValues result;
     ds18b20.requestTemperatures();
-    return ds18b20.getTempCByIndex(0);
+    result.temperature = ds18b20.getTempCByIndex(0);
+    return result;
 }
 
 void DallasTemperatureSensor::readPublishValue(MqttManager *mqttManager) {
@@ -26,7 +28,7 @@ void DallasTemperatureSensor::readPublishValue(MqttManager *mqttManager) {
 
         char tempCstr[8];
         dtostrf(tempC, 1, 2, tempCstr);
-        mqttManager->publish("terra2/DS18B20/temp", tempCstr);
+        mqttManager->publish("terra1/DS18B20/temp", tempCstr);
     }else{
         Serial.println("Error: Could not read temperature data");
     }
