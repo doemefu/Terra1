@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_SENSOR_H
 #define TERRA1_SENSOR_H
-#pragma once
+
 
 #include "MqttManager.h"
 #include "oneWire.h"
@@ -19,6 +19,8 @@ public:
     virtual SensorValues readValue() = 0;
     virtual void readPublishValue(MqttManager *mqttManager) = 0;
     virtual ~Sensor() = default;
+    virtual int getHumidity() = 0;
+
 };
 
 #endif //TERRA1_SENSOR_H

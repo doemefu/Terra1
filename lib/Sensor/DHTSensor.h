@@ -4,7 +4,7 @@
 
 #ifndef TERRA1_DHTSENSOR_H
 #define TERRA1_DHTSENSOR_H
-#pragma once
+
 
 #include "Sensor.h"
 #include <DHT.h>
@@ -14,9 +14,11 @@ public:
     DHTSensor(uint8_t pin, uint8_t type);
     SensorValues readValue() override;
     void readPublishValue(MqttManager *mqttManager) override;
+    int getHumidity() override;
 
 private:
     DHT dht;
+    SensorValues sensorData;
 
 };
 
