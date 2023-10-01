@@ -8,31 +8,34 @@ DHTSensor::DHTSensor(uint8_t pin, uint8_t type) : dht(pin, type) {
 }
 
 SensorValues DHTSensor::readValue() {
-    SensorValues result;
-    result.temperature = dht.readTemperature();
-    return result;
+    sensorData.temperature = dht.readTemperature();
+    return sensorData;
 }
 
 void DHTSensor::readPublishValue(MqttManager *mqttManager) {
     char tempString[16];
     char humiString[16];
-    float temp = dht.readTemperature();
-    float humi = dht.readHumidity();
+    sensorData.temperature = dht.readTemperature();
+    sensorData.humidity = dht.readHumidity();
 
-    if (isnan(humi) || isnan(temp))
+    if (isnan(sensorData.humidity) || isnan(sensorData.humidity))
     {
         Serial.println(F("Failed to read from DHT sensor!"));
         return;
     }
 
-    dtostrf(temp, 1, 2, tempString);
-    dtostrf(humi, 1, 2, humiString);
+    dtostrf(sensorData.temperature, 1, 2, tempString);
+    dtostrf(sensorData.humidity, 1, 2, humiString);
 
     Serial.println("Temperature: ");
     Serial.println(tempString);
-    mqttManager->publish("terra1/DHT11/temp", tempString);
+    mqttManager->publish("terra1/DHT11/temp", tempString, false);
     delay(200);
     Serial.println("Humidity: ");
     Serial.println(humiString);
-    mqttManager->publish("terra1/DHT11/humi", humiString);
+    mqttManager->publish("terra1/DHT11/humi", humiString, false);
+}
+
+int DHTSensor::getHumidity() {
+    return sensorData.humidity;
 }

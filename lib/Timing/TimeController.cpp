@@ -11,6 +11,7 @@ int TimeController::seconds = 0;
 TimeController::TimeController() {
     time_setup();
     loop();
+    delay(500);
     printLocalTime();
 }
 
@@ -29,7 +30,7 @@ void TimeController::time_sync(){
     timeinfo = localtime(&now);
 
     // Synchronisieren Sie die Systemzeit einmal am Tag, um Ungenauigkeiten zu minimieren
-    if (timeinfo->tm_hour == 1 && timeinfo->tm_min == 0 && lastSync != timeinfo->tm_mday) {
+    if (timeinfo->tm_hour == 4 && timeinfo->tm_min == 0 && lastSync != timeinfo->tm_mday) {
         time_setup();
         lastSync = timeinfo->tm_mday;
     }
@@ -40,7 +41,7 @@ void TimeController::loop(){
     hours = timeinfo->tm_hour;
     minutes = timeinfo->tm_min;
     seconds = timeinfo->tm_sec;
-    }
+}
 
 void TimeController::printLocalTime(){
     Serial.print("Aktuelle Zeit: ");

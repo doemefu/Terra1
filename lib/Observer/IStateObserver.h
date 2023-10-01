@@ -9,7 +9,7 @@
 
 class IStateObserver {
 public:
-    virtual void onStateChanged(const String& topic, const String& state) = 0;
+    virtual void onStateChanged(const String& topic, const String& state, const bool& retainFlag) = 0;
 };
 
 #endif //TERRA1_ISTATEOBSERVER_H
