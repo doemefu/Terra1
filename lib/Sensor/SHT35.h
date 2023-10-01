@@ -14,9 +14,11 @@ public:
     explicit SHTSensor(int SCLPIN);
     SensorValues readValue() override;
     void readPublishValue(MqttManager *mqttManager) override;
+    int getHumidity() override;
 
 private:
     SHT35 sht;
+    SensorValues sensorData;
 };
 
 #endif //TERRA1_SHT35_H

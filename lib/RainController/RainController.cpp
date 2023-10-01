@@ -15,7 +15,7 @@ bool RainController::turnRainOn() {
     rainStartTime = millis();
     RainState = ON;
     for(auto& observer : observers) {
-        observer->onStateChanged("terra1/rain", "{\"RainState\": \"ON\"}");
+        observer->onStateChanged("terra1/rain", "{\"RainState\": \"ON\"}", true);
     }
     return relayController->channelOn(MyRelay::rainChannel);  // Using relayController instance
 }
@@ -24,7 +24,7 @@ bool RainController::turnRainOff() {
     Serial.println("RainController::turnRainOff()");
     RainState = OFF;
     for(auto& observer : observers) {
-        observer->onStateChanged("terra1/rain", "{\"RainState\": \"OFF\"}");
+        observer->onStateChanged("terra1/rain", "{\"RainState\": \"OFF\"}", true);
     }
     return relayController->channelOff(MyRelay::rainChannel);  // Using relayController instance
 }

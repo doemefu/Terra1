@@ -8,9 +8,9 @@
 #include "DHT.h"
 
 enum StateEnum {
-    ON,
+    ERROR,
     OFF,
-    ERROR
+    ON,
 };
 
 namespace MyDHT

@@ -34,7 +34,7 @@ void MqttManager::reconnect() {
         if (mqttClient.connect("terra1", "terra1/status/mqtt", 0, true, "{\"MqttState\": \"OFFLINE\"}")) {
             Serial.println("connected");
             mqttClient.publish("terra1/status/mqtt", "{\"MqttState\": \"ONLINE\"}", true);
-            mqttClient.subscribe("terra1/lamp/man");
+            mqttClient.subscribe("terra1/light/man");
             mqttClient.subscribe("terra1/rain/man");
         } else {
             Serial.print("failed, rc=");
@@ -56,21 +56,21 @@ void MqttManager::callbackDispatcher(char* topic, byte* message, unsigned int le
     }
     Serial.println();
 
-    if (String(topic) == "terra1/lamp/man") {
-        if(inpMessage == "on"){
+    if (String(topic) == "terra1/light/man") {
+        if(inpMessage == "{\"LightState\":\"ON\"}"){
             Serial.println("Turning light On");
             lightController->turnLightOn();
         }
-        else if(inpMessage == "off"){
+        else if(inpMessage == "{\"LightState\":\"OFF\"}"){
             Serial.println("Turning light Off");
             lightController->turnLightOff();
         }
     } else if (String(topic) == "terra1/rain/man") {
-        if(inpMessage == "on"){
+        if(inpMessage == "{\"RainState\":\"ON\"}"){
             Serial.println("Turning rain On");
             rainController->turnRainOn();
         }
-        else if(inpMessage == "off"){
+        else if(inpMessage == "{\"RainState\":\"OFF\"}"){
             Serial.println("Turning rain Off");
             rainController->turnRainOff();
         }
@@ -80,7 +80,7 @@ void MqttManager::callbackDispatcher(char* topic, byte* message, unsigned int le
     }
 }
 
-void MqttManager::publish(const String& topic, const String& message) {
-    mqttClient.publish(topic.c_str(), message.c_str());
+void MqttManager::publish(const String& topic, const String& message, const bool& retain){
+    mqttClient.publish(topic.c_str(), message.c_str(), retain);
     Serial.println("Published message: " + message + " on topic: " + topic);
 }

@@ -28,7 +28,7 @@ SensorValues SHTSensor::readValue() {
 
 void SHTSensor::readPublishValue(MqttManager *mqttManager) {
     // Read the temperature and humidity values from the sensor
-    SensorValues sensorData = this->readValue();
+    sensorData = this->readValue();
     if(sensorData.temperature == -1.0f || sensorData.humidity == -1.0f) {
         StaticJsonDocument<128> jsonErrorDoc;
 
@@ -38,7 +38,7 @@ void SHTSensor::readPublishValue(MqttManager *mqttManager) {
         String jsonErrorString;
         serializeJson(jsonErrorDoc, jsonErrorString);
 
-        mqttManager->publish("terra1/status/SHT35", jsonErrorString.c_str());  // Converting String to char array using c_str()
+        mqttManager->publish("terra1/status/SHT35", jsonErrorString.c_str(), false);  // Converting String to char array using c_str()
         return;
     }
     // Initialize JSON document
@@ -55,6 +55,10 @@ void SHTSensor::readPublishValue(MqttManager *mqttManager) {
     // Publish JSON string
     Serial.println("Publishing Sensor Data as JSON:");
     Serial.println(jsonString);
-    mqttManager->publish("terra1/SHT35/data", jsonString.c_str());  // Converting String to char array using c_str()
+    mqttManager->publish("terra1/SHT35/data", jsonString.c_str(), false);  // Converting String to char array using c_str()
+}
+
+int SHTSensor::getHumidity(){
+    return sensorData.humidity;
 }
 

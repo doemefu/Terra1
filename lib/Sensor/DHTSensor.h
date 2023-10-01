@@ -14,9 +14,11 @@ public:
     DHTSensor(uint8_t pin, uint8_t type);
     SensorValues readValue() override;
     void readPublishValue(MqttManager *mqttManager) override;
+    int getHumidity() override;
 
 private:
     DHT dht;
+    SensorValues sensorData;
 
 };
 
