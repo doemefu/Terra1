@@ -30,8 +30,6 @@ void setup(){
     delay(5000);
     Serial.println("starting setup");
 
-    timeController = new TimeController();
-
     sht35Sensor = SensorFactory::createSensor("SHT35");
     relayController = new RelayController(MyRelay::i2cAddress);
 
@@ -40,6 +38,17 @@ void setup(){
 
     mqttManager = &MqttManager::getInstance(espClient, lightController, rainController);
 
+    lightController->registerObserver(mqttManager);
+    rainController->registerObserver(mqttManager);
+
+    network.switching();
+    mqttManager->loop();
+
+    lightController->turnLightOff();
+    rainController->turnRainOff();
+
+    timeController = new TimeController();
+
     esp_task_wdt_init(WDT_TIMEOUT, true); //enable panic so ESP32 restarts
     esp_task_wdt_add(NULL); //add current thread to WDT watch
 
@@ -47,13 +56,11 @@ void setup(){
 }
 
 void loop() {
-    timeController->loop();
-
     while(WiFiClass::status() != WL_CONNECTED) {
         Serial.println("WiFi not connected");
         network.switching();
     }
-
+    timeController->loop();
     mqttManager->loop();
 
     if (millis() - lastSensorMeasurement > Timing::measureWait){
@@ -62,12 +69,16 @@ void loop() {
         lastSensorMeasurement = millis();
     }
 
-    if (timeController->getHours() == Timing::lightStartTime && timeController->getMinutes() == 0 && lightController->getLightState() == OFF) {
+    if (timeController->getHours() == Timing::lightStartTime && timeController->getMinutes() == 01 && lightController->getLightState() != ON) {
         lightController->turnLightOn();
     }
 
-    if (timeController->getHours() == Timing::lightStartTime && timeController->getMinutes() == 0 && lightController->getLightState() == ON) {
+    if (timeController->getHours() == Timing::lightStopTime && timeController->getMinutes() == 01 && lightController->getLightState() == ON) {
         lightController->turnLightOff();
+    }
+
+    if (sht35Sensor->getHumidity() < 70 && rainController->getRainState() != ON) {
+        rainController->turnRainOn();
     }
 
     if (rainController->getRainState() == ON && millis() - rainController->getRainStartTime() > Timing::rainDuration) {
