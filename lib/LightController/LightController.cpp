@@ -11,7 +11,7 @@ LightController::LightController(RelayController *relayController) {
 bool LightController::turnLightOn() {
     lightState = ON;
     for(auto& observer : observers) {
-        observer->onStateChanged("terra1/light", "{\"LightState\": \"ON\"}", true);
+        observer->onStateChanged("terra1/light", "{\"LightState\": 1}", true);
     }
     return relayController->channelOn(MyRelay::lightChannel);  // Using relayController instance
 }
@@ -19,7 +19,7 @@ bool LightController::turnLightOn() {
 bool LightController::turnLightOff() {
     lightState = OFF;
     for(auto& observer : observers) {
-        observer->onStateChanged("terra1/light", "{\"LightState\": \"OFF\"}", true);
+        observer->onStateChanged("terra1/light", "{\"LightState\": 0}", true);
     }
     return relayController->channelOff(MyRelay::lightChannel);  // Using relayController instance
 }

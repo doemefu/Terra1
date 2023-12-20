@@ -52,6 +52,7 @@ namespace TimeConfig{
 }
 namespace Timing {
     extern const int measureWait;
+    extern const int rainWait;
     extern long rainStartTime;
     extern long rainDuration;
     extern int lightStartTime;

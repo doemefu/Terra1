@@ -77,7 +77,7 @@ void loop() {
         lightController->turnLightOff();
     }
 
-    if (sht35Sensor->getHumidity() < 70 && rainController->getRainState() != ON) {
+    if (sht35Sensor->getHumidity() < 70 && rainController->getRainState() != ON && millis() - rainController->getRainStartTime() > Timing::rainWait) {
         rainController->turnRainOn();
     }
 
