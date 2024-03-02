@@ -69,13 +69,13 @@ void loop() {
         lastSensorMeasurement = millis();
     }
 
-    if (timeController->getHours() == Timing::lightStartTime && timeController->getMinutes() == 01 && lightController->getLightState() != ON) {
-        lightController->turnLightOn();
-    }
+    //if (timeController->getHours() == Timing::lightStartTime && timeController->getMinutes() == 01 && lightController->getLightState() != ON) {
+    //    lightController->turnLightOn();
+    //}
 
-    if (timeController->getHours() == Timing::lightStopTime && timeController->getMinutes() == 01 && lightController->getLightState() == ON) {
-        lightController->turnLightOff();
-    }
+    //if (timeController->getHours() == Timing::lightStopTime && timeController->getMinutes() == 01 && lightController->getLightState() == ON) {
+    //    lightController->turnLightOff();
+    //}
 
     if (sht35Sensor->getHumidity() < 70 && rainController->getRainState() != ON && millis() - rainController->getRainStartTime() > Timing::rainWait) {
         rainController->turnRainOn();

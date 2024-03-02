@@ -36,6 +36,8 @@ void MqttManager::reconnect() {
             mqttClient.publish("terra1/mqtt/status", "{\"MqttState\": 1}", true);
             mqttClient.subscribe("terra1/light/man");
             mqttClient.subscribe("terra1/rain/man");
+            mqttClient.subscribe("terraGeneral/light/schedule");
+            mqttClient.subscribe("terraGeneral/rain/schedule");
         } else {
             Serial.print("failed, rc=");
             Serial.print(mqttClient.state());
@@ -74,8 +76,25 @@ void MqttManager::callbackDispatcher(char* topic, byte* message, unsigned int le
             Serial.println("Turning rain Off");
             rainController->turnRainOff();
         }
-    }
-    else {
+    } else if (String(topic) == "terraGeneral/light/schedule") {
+        if(inpMessage == "{\"LightState\": 1}"){
+            Serial.println("Turning light On");
+            lightController->turnLightOn();
+        }
+        else if(inpMessage == "{\"LightState\": 0}"){
+            Serial.println("Turning light Off");
+            lightController->turnLightOff();
+        }
+    } else if (String(topic) == "terraGeneral/rain/schedule") {
+        if(inpMessage == "{\"RainState\": 1}"){
+            Serial.println("Turning rain On");
+            rainController->turnRainOn();
+        }
+        else if(inpMessage == "{\"RainState\": 0}"){
+            Serial.println("Turning rain Off");
+            rainController->turnRainOff();
+        }
+    } else {
         Serial.println("Unknown topic: " + String(topic));
     }
 }
