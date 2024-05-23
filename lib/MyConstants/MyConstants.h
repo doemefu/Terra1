@@ -58,4 +58,7 @@ namespace Timing {
     extern int lightStartTime;
     extern int lightStopTime;
 }
+
+void loadConfig();
+
 #endif //TERRA1_MYCONSTANTS_H

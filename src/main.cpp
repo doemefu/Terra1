@@ -30,6 +30,8 @@ void setup(){
     delay(5000);
     Serial.println("starting setup");
 
+    loadConfig();
+
     sht35Sensor = SensorFactory::createSensor("SHT35");
     relayController = new RelayController(MyRelay::i2cAddress);
 
