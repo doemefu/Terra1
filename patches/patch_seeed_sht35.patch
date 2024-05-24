@@ -1,5 +1,5 @@
---- Seeed_SHT35.h.orig 2024-05-24 12:00:00.000000000 +0000
-+++ Seeed_SHT35.h 2024-05-24 12:00:00.000000000 +0000
+--- .pio/libdeps/esp-wrover-kit/Grove - I2C High Accuracy Temp_Humi Sensor SHT35/Seeed_SHT35.h.orig 2024-05-24 12:00:00.000000000 +0000
++++ .pio/libdeps/esp-wrover-kit/Grove - I2C High Accuracy Temp_Humi Sensor SHT35/Seeed_SHT35.h 2024-05-24 12:00:00.000000000 +0000
 @@ -59,7 +59,7 @@
      DATA_MEAS_HIGHREP_STRETCH = 0x2C06
  } etCommands;
