@@ -76,14 +76,14 @@ jobs:
     - name: Install Dependencies
       run: pio pkg install
 
-    - name: Patch Seeed_SHT35.h for Case Sensitivity
-      run: sed -i 's/#include "arduino.h"/#include "Arduino.h"/' .pio/libdeps/esp-wrover-kit/Grove\ -\ I2C\ High\ Accuracy\
-
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
+
+    - name: Patch Seeed_SHT35.h for Case Sensitivity
+      run: sed -i 's/#include "arduino.h"/#include "Arduino.h"/' .pio/libdeps/esp-wrover-kit/Grove\ -\ I2C\ High\ Accuracy\
 
     - if: matrix.build-mode == 'manual'
       name: Build Project
