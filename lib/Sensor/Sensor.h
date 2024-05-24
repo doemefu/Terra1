@@ -7,7 +7,6 @@
 
 
 #include "MqttManager.h"
-#include "oneWire.h"
 
 struct SensorValues{
     float temperature;
