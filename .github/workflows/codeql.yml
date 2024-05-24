@@ -84,7 +84,7 @@ jobs:
 
     - if: matrix.build-mode == 'manual'
       name: Build Project
-      run: pio run
+      run: pio run -e esp-wrover-kit
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
