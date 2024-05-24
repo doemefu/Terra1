@@ -59,14 +59,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: |
           ~/.cache/pip
           ~/.platformio/.cache
         key: ${{ runner.os }}-pio
 
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@main
       with:
         python-version: '3.11'
 
@@ -74,7 +74,10 @@ jobs:
       run: pip install --upgrade platformio
 
     - name: Install Dependencies
-      run: pio lib install
+      run: pio pkg install
+
+    - name: Patch Seeed_SHT35.h for Case Sensitivity
+      run: sed -i 's/#include "arduino.h"/#include "Arduino.h"/' .pio/libdeps/esp-wrover-kit/Grove\ -\ I2C\ High\ Accuracy\
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
