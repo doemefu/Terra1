@@ -76,8 +76,10 @@ jobs:
     - name: Install Dependencies
       run: pio pkg install
 
-    - name: Patch Seeed_SHT35.h for Case Sensitivity
-      run: sed -i 's/#include "arduino.h"/#include "Arduino.h"/' ".pio/libdeps/esp-wrover-kit/Grove - I2C High Accuracy Temp_Humi Sensor SHT35/Seeed_SHT35.h"
+    - name: Patch Seeed_SHT35.h for Case Sensitivity and Typedef Conflict
+      run: |
+        sed -i 's/#include "arduino.h"/#include "Arduino.h"/' ".pio/libdeps/esp-wrover-kit/Grove - I2C High Accuracy Temp_Humi Sensor SHT35/Seeed_SHT35.h"
+        patch -p0 < patches/patch_seeed_sht35.patch
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
