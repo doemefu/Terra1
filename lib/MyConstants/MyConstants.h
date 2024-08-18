@@ -6,6 +6,7 @@
 #ifndef TERRA1_MYCONSTANTS_H
 #define TERRA1_MYCONSTANTS_H
 #include "DHT.h"
+#include "MySensitives.h"
 
 enum StateEnum {
     ERROR,
@@ -33,11 +34,6 @@ namespace MyRelay
     extern const int i2cAddress;
     extern const int rainChannel;
     extern const int lightChannel;
-}
-namespace WifiDetails
-{
-    extern const char* SSID;
-    extern const char* Password;
 }
 
 namespace MqttDetails {

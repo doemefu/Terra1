@@ -30,15 +30,18 @@ void setup(){
     delay(5000);
     Serial.println("starting setup");
 
-    loadConfig();
-
     sht35Sensor = SensorFactory::createSensor("SHT35");
+    Serial.println("SHT35 done");
+
     relayController = new RelayController(MyRelay::i2cAddress);
+    Serial.println("RelayController done");
 
     lightController = new LightController(relayController);
     rainController = new RainController(relayController);
+    Serial.println("Rain and Light Controller done");
 
     mqttManager = &MqttManager::getInstance(espClient, lightController, rainController);
+    Serial.println("MqttManager done");
 
     lightController->registerObserver(mqttManager);
     rainController->registerObserver(mqttManager);

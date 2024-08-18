@@ -5,7 +5,6 @@
 // Created by Dominic Furchert on 04.07.23.
 //
 
-#include <fstream>
 #include "MyConstants.h"
 
 namespace MyDHT
@@ -27,30 +26,7 @@ namespace MyRelay
 {
     const int i2cAddress = 0x11;
     const int lightChannel = 4;
-    const int rainChannel = 2;
-}
-namespace WifiDetails
-{
-    const char* SSID;
-    const char* Password;
-}
-
-void loadConfig() {
-    std::ifstream config("../config/sensitive/wlan.config");
-    std::string ssid, password;
-
-    if (!getline(config, ssid)) {
-        throw std::runtime_error("Failed to read SSID from config file.");
-    }
-
-    if (!getline(config, password)) {
-        throw std::runtime_error("Failed to read Password from config file.");
-    }
-
-    WifiDetails::SSID = strdup(ssid.c_str()); // Ensure you manage the allocated memory correctly
-    WifiDetails::Password = strdup(password.c_str()); // Same as above
-
-    config.close();
+    const int rainChannel = 1;
 }
 
 namespace MqttDetails {
