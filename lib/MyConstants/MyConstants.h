@@ -6,7 +6,7 @@
 #ifndef TERRA1_MYCONSTANTS_H
 #define TERRA1_MYCONSTANTS_H
 #include "DHT.h"
-#include "MySensitives.h"
+#include "MyWlan.h"
 
 enum StateEnum {
     ERROR,

@@ -6,3 +6,5 @@
 CMakeListsPrivate.txt
 cmake-build-*/
 config/sensitive
+lib/MySensitives/**
+/lib/MySensitives/

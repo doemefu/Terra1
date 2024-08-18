@@ -6,9 +6,9 @@
 #define TERRA1_MYSENSITIVES_H
 
 
-namespace WifiDetails
+namespace SomethingSensitive
 {
-    extern const char* SSID;
+    extern const char* Username;
     extern const char* Password;
 }
 

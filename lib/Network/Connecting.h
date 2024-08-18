@@ -15,6 +15,7 @@ public:
     void enter(Network* network) override;
     void switching(Network* network) override;
     void exit(Network* network) override;
+    void printWiFiError(wl_status_t status);
     static NetworkState& getInstance();
 
 private:

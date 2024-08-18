@@ -4,8 +4,8 @@
 
 #include "MySensitives.h"
 
-namespace WifiDetails
+namespace SomethingSensitive
 {
-    const char* SSID = "MySSID";
+    const char* Username = "MyUsername";
     const char* Password = "MyPassword";
 }
